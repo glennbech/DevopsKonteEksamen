@@ -1,6 +1,9 @@
 name: Terraform Pipeline
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -32,7 +35,7 @@ jobs:
         run: terraform plan
         working-directory: ${{ env.TF_DIR }}
 
-      - name: Apply Terraform s
+      - name: Apply Terraform
         if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve
         working-directory: ${{ env.TF_DIR }}
