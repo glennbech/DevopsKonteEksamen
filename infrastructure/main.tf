@@ -13,7 +13,6 @@ variable "url_content_matcher" {
   type = map(string)
   default = {
     "https://www.vg.no" = "Tips oss på"
-    "https://xkcd.com/" = "A webcomic of romance,"
   }
 }
 
