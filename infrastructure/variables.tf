@@ -1,6 +1,6 @@
 variable "statuscake_api_token" {}
 
-variable "name" {
+variable "name_list" {
   type = list(string)
     default = [
         "VG uptime check",
@@ -24,11 +24,3 @@ variable "content_matcher" {
     ]
 }
 
-variable "contact_group_emails" {
-  type = list(string)
-  default = [
-    "johnsmith@example.com",
-    "janesmith@example.com",
-    "famini4973@bitflirt.com",
-  ]
-}
