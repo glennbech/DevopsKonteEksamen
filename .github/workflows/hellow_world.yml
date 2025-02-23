@@ -33,7 +33,7 @@ jobs:
         working-directory: ${{ env.TF_DIR }}
 
       - name: Plan Terraform
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/'
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/feature/')
         run: terraform plan
         working-directory: ${{ env.TF_DIR }}
 
