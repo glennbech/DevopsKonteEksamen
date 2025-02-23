@@ -13,36 +13,83 @@ provider "statuscake" {
 
 resource "statuscake_contact_group" "operations_team" {
   name     = "Operations Team for"
-  ping_url = var.url[0]
   email_addresses = var.contact_group_emails
 }
 
-resource "statuscake_contact_group" "operations_team1" {
-  name = "Operations Team for 1"
-    ping_url = var.url[1]
-    email_addresses = var.contact_group_emails
+resource "statuscake_uptime_check" "vg" {
+  check_interval = 300
+  confirmation   = 3
+  name           = var.name[0]
+  trigger_rate   = 10
+
+  contact_groups = [
+    statuscake_contact_group.operations_team.id,
+  ]
+
+  http_check {
+    enable_cookies    = false
+    timeout           = 20
+    validate_ssl      = true
+    content_matchers  {
+      content          = var.content_matcher[0]
+      include_headers  = true
+      matcher          = "CONTAINS_STRING"
+    }
+    status_codes = [
+      "200"
+    ]
+  }
+
+  monitored_resource {
+    address = var.url[0]
+  }
+
+  tags = [
+    "production",
+  ]
 }
 
-module "statuscake_uptime_check_vg" {
-  source = "./modules/statuscake_uptime_check"
-  name = var.name[0]
-  url = var.url[0]
-  content_matcher = var.content_matcher[0]
-  contact_group_id = statuscake_contact_group.operations_team.id
+resource "statuscake_uptime_check" "xkcd" {
+  check_interval = 300
+  confirmation   = 3
+  name           = var.name[1]
+  trigger_rate   = 10
+
+  contact_groups = [
+    statuscake_contact_group.operations_team.id,
+  ]
+
+  http_check {
+    enable_cookies    = false
+    timeout           = 20
+    validate_ssl      = true
+    content_matchers  {
+      content          = var.content_matcher[1]
+      include_headers  = true
+      matcher          = "CONTAINS_STRING"
+    }
+    status_codes = [
+      "200"
+    ]
+  }
+
+  monitored_resource {
+    address = var.url[1]
+  }
+
+  tags = [
+    "production",
+  ]
 }
 
-module "statuscake_uptime_check_xkcd" {
-  source = "./modules/statuscake_uptime_check"
-  name = var.name[1]
-  url = var.url[1]
-  content_matcher = var.content_matcher[1]
-  contact_group_id = statuscake_contact_group.operations_team.id
+output "vg_uptime_check_id" {
+  value = statuscake_uptime_check.vg.id
+}
+
+output "xkcd_uptime_check_id" {
+  value = statuscake_uptime_check.xkcd.id
 }
 
 output "operations_team_contact_group_id" {
   value = statuscake_contact_group.operations_team.id
-}
-
-output "operations_team1_contact_group_id" {
-  value = statuscake_contact_group.operations_team1.id
 }
