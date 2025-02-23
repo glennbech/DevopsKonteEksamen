@@ -28,6 +28,7 @@ resource "statuscake_uptime_check" "example" {
   ]
 
   http_check {
+    enable_cookies = false
     timeout          = 20
     validate_ssl     = true
     status_codes = [
