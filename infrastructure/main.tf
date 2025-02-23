@@ -26,7 +26,7 @@ module "statuscake_uptime_check_vg" {
 
 module "statuscake_uptime_check_xkcd" {
   source           = "./modules/statuscake_uptime_check"
-  check_interval   = 240
+  check_interval   = 900
   name             = var.name[1]
   url              = var.url[1]
   content_matcher  = var.content_matcher[1]
