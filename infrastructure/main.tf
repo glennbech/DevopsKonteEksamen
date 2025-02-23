@@ -32,14 +32,6 @@ module "statuscake_uptime_check_xkcd" {
   contact_group_id = statuscake_contact_group.operations_team.id
 }
 
-output "example_com_uptime_check_id" {
-  value = module.statuscake_uptime_check_vg.uptime_check_id
-}
-
-output "xkcd_com_uptime_check_id" {
-  value = module.statuscake_uptime_check_xkcd.uptime_check_id
-}
-
 output "operations_team_contact_group_id" {
   value = statuscake_contact_group.operations_team.id
 }
