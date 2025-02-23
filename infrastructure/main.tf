@@ -37,7 +37,8 @@ resource "statuscake_uptime_check" "vg" {
   ]
 
   http_check {
-    enable_cookies    = false
+    enable_cookies    = true
+    follow_redirects = true
     timeout           = 20
     validate_ssl      = true
     content_matchers  {
@@ -46,7 +47,10 @@ resource "statuscake_uptime_check" "vg" {
       matcher          = "CONTAINS_STRING"
     }
     status_codes = [
-      "200"
+      "200",
+      "202",
+      "404",
+      "405",
     ]
   }
 
@@ -63,7 +67,6 @@ resource "statuscake_uptime_check" "vg" {
 output "vg_uptime_check_id" {
   value = statuscake_uptime_check.vg.id
 }
-
 
 output "operations_team_contact_group_id" {
   value = statuscake_contact_group.operations_team.id
