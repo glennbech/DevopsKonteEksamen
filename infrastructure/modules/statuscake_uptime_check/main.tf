@@ -8,10 +8,10 @@ terraform {
 }
 
 resource "statuscake_uptime_check" "this" {
-  check_interval = 300
-  confirmation   = 3
+  check_interval = var.check_interval
+  confirmation   = var.confirmation
   name           = var.name
-  trigger_rate   = 10
+  trigger_rate   = var.trigger_rate
 
   contact_groups = [
     var.contact_group_id,
@@ -35,9 +35,7 @@ resource "statuscake_uptime_check" "this" {
     address = var.url
   }
 
-  tags           = [
-    "production",
-  ]
+  tags           = var.tags
 }
 
 output "uptime_check_id" {
