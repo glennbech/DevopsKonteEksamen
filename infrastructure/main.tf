@@ -9,8 +9,21 @@ terraform {
 
 variable "statuscake_api_token" {}
 
-variable "url" {
-    default = "https://www.vg.no"
+variable "url_content_matcher" {
+  type = map(string)
+  default = {
+    "https://www.vg.no" = "Tips oss på"
+    "https://xkcd.com/" = "A webcomic of romance,"
+  }
+}
+
+variable "contact_group_emails" {
+    type = list(string)
+    default = [
+      "johnsmith@example.com",
+      "janesmith@example.com",
+      "famini4973@bitflirt.com",
+    ]
 }
 
 provider "statuscake" {
@@ -18,13 +31,15 @@ provider "statuscake" {
 }
 
 resource "statuscake_uptime_check" "example" {
+  for_each = var.url_content_matcher
+
   check_interval = 300
   confirmation   = 3
-  name           = "example-site"
+  name           = each.key
   trigger_rate   = 10
 
   contact_groups = [
-    statuscake_contact_group.operations_team.id,
+    statuscake_contact_group.operations_team[each.key].id,
   ]
 
   http_check {
@@ -32,7 +47,7 @@ resource "statuscake_uptime_check" "example" {
     timeout          = 20
     validate_ssl     = true
     content_matchers  {
-      content = "Tips oss på"
+      content = each.value
       include_headers = true
       matcher = "CONTAINS_STRING"
     }
@@ -41,10 +56,8 @@ resource "statuscake_uptime_check" "example" {
     ]
   }
 
-
-
   monitored_resource {
-    address = var.url
+    address = each.key
   }
   tags = [
     "production",
@@ -52,20 +65,21 @@ resource "statuscake_uptime_check" "example" {
 }
 
 output "example_com_uptime_check_id" {
-  value = statuscake_uptime_check.example.id
+  value = {
+    for key, check in statuscake_uptime_check.example : key => check.id
+  }
 }
 
 resource "statuscake_contact_group" "operations_team" {
-  name     = "Operations Team"
-  ping_url = var.url
+  for_each = var.url_content_matcher
 
-  email_addresses = [
-    "johnsmith@example.com",
-    "janesmith@example.com",
-    "famini4973@bitflirt.com",
-  ]
+  name     = "Operations Team for ${each.key}"
+  ping_url = each.key
+  email_addresses = var.contact_group_emails
 }
 
 output "operations_team_contact_group_id" {
-  value = statuscake_contact_group.operations_team.id
+  value = {
+    for key, group in statuscake_contact_group.operations_team : key => group.id
+  }
 }
