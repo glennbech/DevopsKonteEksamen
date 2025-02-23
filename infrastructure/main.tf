@@ -22,14 +22,14 @@ provider "statuscake" {
 
 resource "statuscake_contact_group" "operations_team" {
   name     = "Operations Team for"
-  ping_url = "https://www.vg.no"
+  ping_url = "https://xkcd.com/"
   email_addresses = var.contact_group_emails
 }
 
 resource "statuscake_uptime_check" "vg" {
   check_interval = 300
   confirmation   = 3
-  name           = "VG uptime check"
+  name           = "XKCD uptime check"
   trigger_rate   = 10
 
   contact_groups = [
@@ -42,7 +42,7 @@ resource "statuscake_uptime_check" "vg" {
     timeout           = 30
     validate_ssl      = true
     content_matchers  {
-      content          = "Tips oss på"
+      content          = "A webcomic of romance"
       include_headers  = true
       matcher          = "CONTAINS_STRING"
     }
@@ -55,7 +55,7 @@ resource "statuscake_uptime_check" "vg" {
   }
 
   monitored_resource {
-    address = "https://www.vg.no"
+    address = "https://xkcd.com/"
   }
 
   tags = [
