@@ -13,6 +13,7 @@ variable "url_content_matcher" {
   type = map(string)
   default = {
     "https://www.vg.no" = "Tips oss på"
+    "https://xkcd.com/" = "A webcomic of romance,"
   }
 }
 
@@ -38,7 +39,7 @@ resource "statuscake_uptime_check" "example" {
   trigger_rate   = 10
 
   contact_groups = [
-    statuscake_contact_group.operations_team[each.key].id,
+    statuscake_contact_group.operations_team.id,
   ]
 
   http_check {
@@ -70,15 +71,10 @@ output "example_com_uptime_check_id" {
 }
 
 resource "statuscake_contact_group" "operations_team" {
-  for_each = var.url_content_matcher
-
-  name     = "Operations Team for ${each.key}"
-  ping_url = each.key
+  name     = "Operations Team for"
   email_addresses = var.contact_group_emails
 }
 
 output "operations_team_contact_group_id" {
-  value = {
-    for key, group in statuscake_contact_group.operations_team : key => group.id
-  }
+  value = statuscake_contact_group.operations_team.id
 }
