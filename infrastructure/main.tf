@@ -31,7 +31,7 @@ provider "statuscake" {
 }
 
 resource "statuscake_uptime_check" "example" {
-  for_each = toset(var.url_content_matcher)
+  for_each = var.url_content_matcher
 
   check_interval = 300
   confirmation   = 3
@@ -69,7 +69,7 @@ output "example_com_uptime_check_id" {
 }
 
 resource "statuscake_contact_group" "operations_team" {
-  for_each = toset(var.url_content_matcher)
+  for_each = var.url_content_matcher
 
   name     = "Operations Team for ${each.key}"
   ping_url = each.key
