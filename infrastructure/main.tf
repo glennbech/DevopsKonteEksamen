@@ -7,87 +7,29 @@ terraform {
   }
 }
 
-variable "contact_group_emails" {
-  type = list(string)
-  default = [
-    "johnsmith@example.com",
-    "janesmith@example.com",
-    "famini4973@bitflirt.com",
-  ]
-}
-
 provider "statuscake" {
   api_token = var.statuscake_api_token
 }
 
 resource "statuscake_contact_group" "operations_team" {
   name     = "Operations Team for"
-  ping_url = "https://www.vg.no"
   email_addresses = var.contact_group_emails
 }
 
-resource "statuscake_uptime_check" "vg" {
-  check_interval = 300
-  confirmation   = 3
-  name           = "VG uptime check"
-  trigger_rate   = 10
-
-  contact_groups = [
-    statuscake_contact_group.operations_team.id,
-  ]
-
-  http_check {
-    enable_cookies    = true
-    follow_redirects = true
-    timeout           = 30
-    validate_ssl      = true
-    content_matchers  {
-      content          = "Tips oss på"
-      include_headers  = true
-      matcher          = "CONTAINS_STRING"
-    }
-    status_codes = [
-      "202",
-      "204",
-      "205",
-      "206",
-      "303",
-        "400",
-        "401",
-        "403",
-      "404",
-      "405",
-        "406",
-        "408",
-        "409",
-        "410",
-        "413",
-        "444",
-        "429",
-      "494",
-        "495",
-        "496",
-        "499",
-      "500",
-      "501",
-      "502",
-
-
-    ]
-  }
-
-  monitored_resource {
-    address = "https://www.vg.no"
-  }
-
-  tags = [
-    "production",
-  ]
+module "statuscake_uptime_check_vg" {
+  source = "./modules/statuscake_uptime_check"
+  name = var.name[0]
+  url = var.url[0]
+  content_matcher = var.content_matcher[0]
+  contact_group_id = statuscake_contact_group.operations_team.id
 }
 
-
-output "vg_uptime_check_id" {
-  value = statuscake_uptime_check.vg.id
+module "statuscake_uptime_check_xkcd" {
+  source = "./modules/statuscake_uptime_check"
+  name = var.name[1]
+  url = var.url[1]
+  content_matcher = var.content_matcher[1]
+  contact_group_id = statuscake_contact_group.operations_team.id
 }
 
 output "operations_team_contact_group_id" {
