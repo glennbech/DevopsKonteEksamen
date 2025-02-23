@@ -18,7 +18,8 @@ resource "statuscake_uptime_check" "this" {
   ]
 
   http_check {
-    enable_cookies    = false
+    enable_cookies    = true
+    follow_redirects = true
     timeout           = 30
     validate_ssl      = true
     content_matchers  {
