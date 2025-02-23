@@ -46,11 +46,11 @@ variable "tags" {
 }
 
 variable "status_code" {
-  type = list(number)
+  type = list(string)
     description = "The status codes to match"
     default     = [
-      200,
-      301,
-      302,
+      "200",
+      "301",
+      "302",
     ]
 }
