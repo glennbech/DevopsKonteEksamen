@@ -31,11 +31,10 @@ provider "statuscake" {
 }
 
 resource "statuscake_uptime_check" "example" {
-  for_each = var.url_content_matcher
 
   check_interval = 300
   confirmation   = 3
-  name           = each.key
+  name           = "https://www.vg.no"
   trigger_rate   = 10
 
   contact_groups = [
@@ -47,7 +46,7 @@ resource "statuscake_uptime_check" "example" {
     timeout          = 20
     validate_ssl     = true
     content_matchers  {
-      content = each.value
+      content = "Tips oss på"
       include_headers = true
       matcher = "CONTAINS_STRING"
     }
@@ -57,7 +56,40 @@ resource "statuscake_uptime_check" "example" {
   }
 
   monitored_resource {
-    address = each.key
+    address = "https://www.vg.no"
+  }
+  tags = [
+    "production",
+  ]
+}
+
+resource "statuscake_uptime_check" "example2" {
+
+  check_interval = 300
+  confirmation   = 3
+  name           = "https://xkcd.com/"
+  trigger_rate   = 10
+
+  contact_groups = [
+    statuscake_contact_group.operations_team.id,
+  ]
+
+  http_check {
+    enable_cookies = false
+    timeout          = 20
+    validate_ssl     = true
+    content_matchers  {
+      content = "A webcomic of romance,"
+      include_headers = true
+      matcher = "CONTAINS_STRING"
+    }
+    status_codes = [
+      "200"
+    ]
+  }
+
+  monitored_resource {
+    address = "https://xkcd.com/"
   }
   tags = [
     "production",
@@ -65,9 +97,11 @@ resource "statuscake_uptime_check" "example" {
 }
 
 output "example_com_uptime_check_id" {
-  value = {
-    for key, check in statuscake_uptime_check.example : key => check.id
-  }
+  value = statuscake_uptime_check.example.id
+}
+
+output "xkcd_com_uptime_check_id" {
+  value = statuscake_uptime_check.example2.id
 }
 
 resource "statuscake_contact_group" "operations_team" {
