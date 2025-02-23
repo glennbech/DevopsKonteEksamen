@@ -12,7 +12,6 @@ permissions:
 env:
   TF_STATE_FILE: "terraform.tfstate"
   TF_DIR: "infrastructure"
-  STATUSCAKE_API_TOKEN: ${{ secrets.STATUSCAKE_API_TOKEN }}
 
 jobs:
   terraform:
@@ -26,12 +25,15 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
+      - name: Export STATUSCAKE API Key
+        run: echo "TF_VAR_statuscake_api_token=${{ secrets.STATUSCAKE_API_TOKEN }}" >> $GITHUB_ENV
+
       - name: Initialize Terraform
         run: terraform init
         working-directory: ${{ env.TF_DIR }}
 
       - name: Plan Terraform
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/features/*'
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/feature/')
         run: terraform plan
         working-directory: ${{ env.TF_DIR }}
 
@@ -41,6 +43,7 @@ jobs:
         working-directory: ${{ env.TF_DIR }}
 
       - name: Commit and Push Terraform State
+        if: github.ref == 'refs/heads/main'
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
