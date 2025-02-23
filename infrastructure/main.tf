@@ -39,7 +39,7 @@ resource "statuscake_uptime_check" "vg" {
   http_check {
     enable_cookies    = true
     follow_redirects = true
-    timeout           = 20
+    timeout           = 30
     validate_ssl      = true
     content_matchers  {
       content          = "Tips oss på"
