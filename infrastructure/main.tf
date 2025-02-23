@@ -28,7 +28,7 @@ module "statuscake_uptime_check_xkcd" {
   source = "./modules/statuscake_uptime_check"
   name = var.name[1]
   url = var.url[1]
-  content_matcher = var.content_matcher[var.url[1]]
+  content_matcher = var.content_matcher[1]
   contact_group_id = statuscake_contact_group.operations_team.id
 }
 
