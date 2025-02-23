@@ -17,11 +17,11 @@ variable "url" {
 }
 
 variable "content_matcher" {
-    type = map(string)
-    default = {
-        "https://www.vg.no" = "Tips oss på"
-        "https://xkcd.com/" = "A webcomic of romance,"
-    }
+    type = list(string)
+    default = [
+        "Tips oss på",
+        "A webcomic of romance,",
+    ]
 }
 
 variable "contact_group_emails" {
