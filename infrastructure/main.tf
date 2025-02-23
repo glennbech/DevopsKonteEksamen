@@ -39,7 +39,7 @@ resource "statuscake_uptime_check" "example" {
   trigger_rate   = 10
 
   contact_groups = [
-    statuscake_contact_group.operations_team.id,
+    statuscake_contact_group.operations_team[each.key].id,
   ]
 
   http_check {
@@ -65,7 +65,9 @@ resource "statuscake_uptime_check" "example" {
 }
 
 output "example_com_uptime_check_id" {
-  value = statuscake_uptime_check.example.id
+  value = {
+    for key, check in statuscake_uptime_check.example : key => check.id
+  }
 }
 
 resource "statuscake_contact_group" "operations_team" {
@@ -77,5 +79,7 @@ resource "statuscake_contact_group" "operations_team" {
 }
 
 output "operations_team_contact_group_id" {
-  value = statuscake_contact_group.operations_team.id
+  value = {
+    for key, group in statuscake_contact_group.operations_team : key => group.id
+  }
 }
