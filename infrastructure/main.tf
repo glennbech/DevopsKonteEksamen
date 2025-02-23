@@ -22,40 +22,23 @@ provider "statuscake" {
 
 resource "statuscake_contact_group" "operations_team" {
   name     = "Operations Team for"
-  ping_url = "https://xkcd.com/"
+  ping_url = "https://www.vg.no"
   email_addresses = var.contact_group_emails
 }
 
 resource "statuscake_uptime_check" "vg" {
   check_interval = 300
   confirmation   = 3
-  name           = "XKCD uptime check"
+  name           = "VG uptime check"
   trigger_rate   = 10
 
   contact_groups = [
     statuscake_contact_group.operations_team.id,
   ]
 
-  http_check {
-    enable_cookies    = true
-    follow_redirects = true
-    timeout           = 30
-    validate_ssl      = true
-    content_matchers  {
-      content          = "A webcomic of romance"
-      include_headers  = true
-      matcher          = "CONTAINS_STRING"
-    }
-    status_codes = [
-      "200",
-      "202",
-      "404",
-      "405",
-    ]
-  }
 
   monitored_resource {
-    address = "https://xkcd.com/"
+    address = "https://www.vg.no"
   }
 
   tags = [
