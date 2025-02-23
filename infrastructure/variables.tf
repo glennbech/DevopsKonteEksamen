@@ -1,7 +1,7 @@
 variable "statuscake_api_token" {}
 
 variable "name" {
-  type = list(string)
+  type    = list(string)
   default = [
     "VG uptime check",
     "XKCD uptime check",
@@ -9,7 +9,7 @@ variable "name" {
 }
 
 variable "url" {
-  type = list(string)
+  type    = list(string)
   default = [
     "https://www.vg.no",
     "https://xkcd.com/",
@@ -17,7 +17,7 @@ variable "url" {
 }
 
 variable "content_matcher" {
-  type = list(string)
+  type    = list(string)
   default = [
     "Tips oss på",
     "A webcomic of romance,",
@@ -25,7 +25,7 @@ variable "content_matcher" {
 }
 
 variable "contact_group_emails" {
-  type = list(string)
+  type    = list(string)
   default = [
     "johnsmith@example.com",
     "janesmith@example.com",
