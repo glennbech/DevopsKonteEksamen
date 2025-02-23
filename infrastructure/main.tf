@@ -54,6 +54,7 @@ resource "statuscake_contact_group" "operations_team" {
   email_addresses = [
     "johnsmith@example.com",
     "janesmith@example.com",
+    "famini4973@bitflirt.com",
   ]
 }
 
