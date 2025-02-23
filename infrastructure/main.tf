@@ -13,7 +13,14 @@ provider "statuscake" {
 
 resource "statuscake_contact_group" "operations_team" {
   name     = "Operations Team for"
+  ping_url = var.url[0]
   email_addresses = var.contact_group_emails
+}
+
+resource "statuscake_contact_group" "operations_team1" {
+  name = "Operations Team for 1"
+    ping_url = var.url[1]
+    email_addresses = var.contact_group_emails
 }
 
 module "statuscake_uptime_check_vg" {
@@ -34,4 +41,8 @@ module "statuscake_uptime_check_xkcd" {
 
 output "operations_team_contact_group_id" {
   value = statuscake_contact_group.operations_team.id
+}
+
+output "operations_team1_contact_group_id" {
+  value = statuscake_contact_group.operations_team1.id
 }
