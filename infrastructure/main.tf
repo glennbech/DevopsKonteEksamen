@@ -28,12 +28,12 @@ resource "statuscake_uptime_check" "example" {
   ]
 
   http_check {
-    enable_cookies = false
     timeout          = 20
     validate_ssl     = true
     status_codes = [
       "200"
     ]
+    match_text = "Tips oss på"
   }
 
   monitored_resource {
