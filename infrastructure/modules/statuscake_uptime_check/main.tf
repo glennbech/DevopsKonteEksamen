@@ -26,9 +26,7 @@ resource "statuscake_uptime_check" "this" {
       include_headers  = true
       matcher          = "CONTAINS_STRING"
     }
-    status_codes      = [
-      "200"
-    ]
+    status_codes      = var.status_code
   }
 
   monitored_resource {

@@ -44,3 +44,13 @@ variable "tags" {
     "production",
   ]
 }
+
+variable "status_code" {
+  type = list(string)
+    description = "The status codes to match"
+    default     = [
+      "200",
+      "301",
+      "302",
+    ]
+}
