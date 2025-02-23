@@ -9,6 +9,10 @@ terraform {
 
 variable "statuscake_api_token" {}
 
+variable "url" {
+    default = "https://www.vg.no"
+}
+
 provider "statuscake" {
   api_token = var.statuscake_api_token
 }
@@ -19,6 +23,10 @@ resource "statuscake_uptime_check" "example" {
   name           = "example-site"
   trigger_rate   = 10
 
+  contact_groups = [
+    statuscake_contact_group.operations_team.id,
+  ]
+
   http_check {
     timeout          = 20
     validate_ssl     = true
@@ -28,7 +36,7 @@ resource "statuscake_uptime_check" "example" {
   }
 
   monitored_resource {
-    address = "https://www.vg.no"
+    address = var.url
   }
   tags = [
     "production",
@@ -41,7 +49,7 @@ output "example_com_uptime_check_id" {
 
 resource "statuscake_contact_group" "operations_team" {
   name     = "Operations Team"
-  ping_url = "https://www.vg.no"
+  ping_url = var.url
 
   email_addresses = [
     "johnsmith@example.com",
