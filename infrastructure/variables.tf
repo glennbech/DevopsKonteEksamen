@@ -19,7 +19,7 @@ variable "url" {
 variable "content_matcher" {
   type    = list(string)
   default = [
-    "vg",
+    "Tips oss på",
     "A webcomic of romance,",
   ]
 }
