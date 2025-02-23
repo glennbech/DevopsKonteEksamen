@@ -31,11 +31,18 @@ resource "statuscake_uptime_check" "example" {
     enable_cookies = false
     timeout          = 20
     validate_ssl     = true
+    content_matchers  {
+      content = "Tips oss på"
+      include_header = true
+      matcher = "CONTAINS_STRING"
+    }
     status_codes = [
       "200"
     ]
     match_text = "Tips oss på"
   }
+
+
 
   monitored_resource {
     address = var.url
