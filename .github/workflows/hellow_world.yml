@@ -43,6 +43,7 @@ jobs:
         working-directory: ${{ env.TF_DIR }}
 
       - name: Commit and Push Terraform State
+        if: github.ref == 'refs/heads/main'
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
