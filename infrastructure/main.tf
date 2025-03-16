@@ -12,7 +12,7 @@ provider "statuscake" {
 }
 
 resource "statuscake_contact_group" "operations_team" {
-  name            = "Operations Team for"
+  name            = "Ops101"
   email_addresses = var.contact_group_emails
 }
 
